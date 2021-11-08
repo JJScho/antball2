@@ -55,6 +55,8 @@ flipper_right = flipper.Flipper(pygame.Rect(screen_width / 2- 100, 400, 20, 20),
 flipper_left = flipper.Flipper(pygame.Rect(screen_width / 2 + 100 , 400, 20, 20), False)
 space.add(flipper_right.body, flipper_right.shape)
 space.add(flipper_left.body, flipper_left.shape)
+flipper_group = pygame.sprite.Group()
+flipper_group.add(flipper_right, flipper_left)
 
 while running:
 
@@ -62,7 +64,7 @@ while running:
     screen.fill((0,0,0))
     # Delay fixed time between frames
     clock.tick(50)
-
+    flipper_group.update()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -76,8 +78,10 @@ while running:
             print(ball_group.sprites())
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LCTRL:
-                flipper_right.rect.move_ip(20, 20)
-                flipper_right.body.position = flipper_right.rect.center
+                flipper_left.state = 1
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LCTRL:
+                flipper_left.state = 0
 
 
 
